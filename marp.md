@@ -5,112 +5,189 @@ size: 16:9
 html: true
 style: |
   section {
-    background-color: #f2f2f7;
+    /* Theme tokens */
+    --bento-bg: #f2f2f7;
+    --bento-surface: #ffffff;
+    --bento-ink: #1d1d1f;
+    --bento-muted: #6e6e73;
+    --bento-muted-on-dark: #a1a1a6;
+    --bento-accent: #8b3dff;
+    --bento-hero-bg: #000000;
+    --bento-hero-ink: #ffffff;
+    --bento-radius-lg: 20px;
+    --bento-radius-md: 16px;
+    --bento-gap: 12px;
+    --bento-gap-lg: 16px;
+    --bento-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    background-color: var(--bento-bg);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     padding: 24px;
     box-sizing: border-box;
   }
 
+  .container,
+  .container * {
+    box-sizing: border-box;
+  }
+
   .container {
+    position: relative;
     display: flex;
-    gap: 16px;
+    gap: var(--bento-gap-lg);
     width: 100%;
     height: 100%;
   }
 
   .hero-box {
     flex: 0 0 32%;
-    background: #000000;
-    color: #ffffff;
-    border-radius: 20px;
+    min-width: 0;
+    background: var(--bento-hero-bg);
+    color: var(--bento-hero-ink);
+    border-radius: var(--bento-radius-lg);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+  }
+
+  /* Hero: image + text */
+  .hero-image {
+    max-height: 40%;
+    margin-bottom: 12px;
+  }
+
+  /* Hero: image only */
+  .hero-box.image-only {
+    padding: 0;
+  }
+
+  .hero-box.image-only img {
+    width: 100%;
     height: 100%;
-    box-sizing: border-box;
+    object-fit: cover;
+  }
+
+  /* Hero: background image (change the URL here) */
+  .hero-box.has-bg {
+    background: var(--bento-hero-bg) url("./images/hero-bg.png") center/cover
+      no-repeat;
+  }
+
+  .hero-eyebrow {
+    color: var(--bento-muted-on-dark);
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-size: 45px;
+    font-weight: 800;
+  }
+
+  .hero-accent {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--bento-accent);
   }
 
   .grid-box {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    height: 100%;
+    gap: var(--bento-gap);
   }
 
   .row {
     display: flex;
-    gap: 12px;
+    gap: var(--bento-gap);
     flex: 1;
-    width: 100%;
   }
 
   .card {
-    background: #ffffff;
-    border-radius: 16px;
+    flex: 1;
+    min-width: 0;
+    background: var(--bento-surface);
+    border-radius: var(--bento-radius-md);
     padding: 8px;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    flex: 1;
-    height: 100%;
-    overflow: hidden; /* 画像のはみ出し防止 */
+    box-shadow: var(--bento-shadow);
+    overflow: hidden;
   }
 
-  /* 🖼️ 画像調整用CSS */
+  /* Fit an image inside a card */
   .card img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* 枠内にきれいに収める */
+    object-fit: contain;
+  }
+
+  /* Small icon above card text */
+  .card-icon {
+    max-height: 50px;
+    margin-bottom: 4px;
+  }
+
+  /* Fill an entire card with an image */
+  .card.cover {
+    padding: 0;
+  }
+
+  .card.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card.w2 { flex: 2; }
   .card.w3 { flex: 3; }
 
-  .accent { color: #8b3dff; font-weight: 800; line-height: 1.1; }
-  .label   { color: #1d1d1f; font-size: 0.95rem; font-weight: 600; }
-  .sub     { color: #6e6e73; font-size: 0.75rem; font-weight: 500; }
+  .accent { color: var(--bento-accent); font-weight: 800; line-height: 1.1; }
+  .label  { color: var(--bento-ink); font-size: 0.95em; font-weight: 600; }
+  .sub    { color: var(--bento-muted); font-size: 0.75em; font-weight: 500; }
 
-  .val-xl { font-size: 2.2rem; }
-  .val-lg { font-size: 1.6rem; }
-  .val-md { font-size: 1.1rem; }
+  .val-xl { font-size: 2.2em; }
+  .val-lg { font-size: 1.6em; }
+  .val-md { font-size: 1.1em; }
 ---
 
 <div class="container">
+  <!-- Default hero: text only -->
   <div class="hero-box">
-    <span class="sub" style="color: #a1a1a6; margin-bottom: 8px"
-      >NEXT GENERATION</span
-    >
-    <div style="font-size: 2.8rem; font-weight: 800">M1</div>
-    <div style="font-size: 1.6rem; font-weight: 700; color: #8b3dff">MAX</div>
+    <span class="sub hero-eyebrow">NEXT GENERATION</span>
+    <div class="hero-title">M1</div>
+    <div class="hero-accent">MAX</div>
   </div>
 
-  <!-- 画像 ＋ テキスト -->
-  <!-- <div class="hero-box"> -->
-  <!--   <!-- 画像の高さ（max-height）をパーセントやpxで調整します -->
-  <!--   <img src="./.png" style="max-height: 40%; margin-bottom: 12px;"> -->
-  <!--   <span class="sub" style="color:#a1a1a6; margin-bottom:4px;">NEXT GENERATION</span> -->
-  <!--   <div style="font-size:2.8rem; font-weight:800;">M1</div> -->
-  <!--   <div style="font-size:1.6rem; font-weight:700; color:#8b3dff;">MAX</div> -->
-  <!-- </div> -->
+  <!--
+    Hero variants: replace the .hero-box above with one of these.
 
-  <!-- 画像のみ（カードいっぱいに大きな製品写真を載せる） -->
-  <!-- <div class="hero-box" style="padding: 0;"> -->
-  <!--   <img src="./product-hero.png" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;"> -->
-  <!-- </div> -->
+    A. Image + text
+    <div class="hero-box">
+      <img class="hero-image" src="./images/hero.png" />
+      <span class="sub hero-eyebrow">NEXT GENERATION</span>
+      <div class="hero-title">M1</div>
+      <div class="hero-accent">MAX</div>
+    </div>
 
-  <!-- 背景画像として設定する（画像の上に文字を重ねる） -->
-  <!-- <div class="hero-box" style="background: url('./hero-bg.png') center/cover no-repeat;"> -->
-  <!--   <span class="sub" style="color:#a1a1a6; margin-bottom:8px;">NEXT GENERATION</span> -->
-  <!--   <div style="font-size:2.8rem; font-weight:800;">M1</div> -->
-  <!--   <div style="font-size:1.6rem; font-weight:700; color:#8b3dff;">MAX</div> -->
-  <!-- </div> -->
+    B. Image only
+    <div class="hero-box image-only">
+      <img src="./images/hero.png" />
+    </div>
+
+    C. Background image
+    <div class="hero-box has-bg">
+      <span class="sub hero-eyebrow">NEXT GENERATION</span>
+      <div class="hero-title">M1</div>
+      <div class="hero-accent">MAX</div>
+    </div>
+  -->
 
   <div class="grid-box">
     <div class="row">
@@ -122,17 +199,17 @@ style: |
         <span class="sub">Up to</span><span class="accent val-lg">30%</span>
         <span class="sub">faster GPU</span>
       </div>
-      <!-- パターン1：カードいっぱいに画像を敷き詰める -->
-      <div class="card">
+      <!-- Image fills the entire card -->
+      <div class="card cover">
         <img src="https://via.placeholder.com/150" alt="Sample Image" />
       </div>
     </div>
     <div class="row">
-      <!-- パターン2：画像 ＋ テキストの組み合わせ（画像サイズを直接指定して調整） -->
+      <!-- Image + text -->
       <div class="card">
         <img
+          class="card-icon"
           src="https://via.placeholder.com/100x50"
-          style="max-height: 50px; margin-bottom: 4px"
         />
         <span class="label">High-performance ProRes Engine</span>
       </div>

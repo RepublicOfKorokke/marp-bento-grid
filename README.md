@@ -57,12 +57,14 @@ This produces `marp.001.png`. The script uses `podman`; replace it with `docker`
 
 ### Hero panel
 
-The hero is a `.hero-box` div. Three ready-made variants are included in `marp.md` as comments:
+The hero is a `.hero-box` div. The default is text only; three alternative variants are included in `marp.md` as one commented block:
 
-1. **Text only** (default) — label, product name, accent line
-2. **Image + text** — add an `<img>` above the text
-3. **Image only** — fill the panel with `object-fit: cover`
-4. **Background image** — set `background: url('./hero-bg.png') center/cover no-repeat`
+1. **Text only** (default) — `.hero-eyebrow`, `.hero-title`, `.hero-accent`
+2. **Image + text** — add `.hero-image` above the text
+3. **Image only** — add `.image-only`; the image fills the panel with `object-fit: cover`
+4. **Background image** — add `.has-bg`, then change the URL in the `.hero-box.has-bg` rule
+
+The hero text styles are classes rather than inline styles, so they survive Marp CLI's PNG export. Edit `.hero-title` / `.hero-accent` in the front matter to change the product name size.
 
 ### Cards
 
@@ -86,20 +88,30 @@ To change the grid proportions, edit the `flex` values in the `style` block at t
 
 Reusable classes are defined in the front matter:
 
-| Class     | Purpose                              |
-| --------- | ------------------------------------ |
-| `.accent` | Purple highlight (`#8b3dff`)         |
-| `.label`  | Primary card text                    |
-| `.sub`    | Secondary/muted text                 |
-| `.val-xl` | Extra-large value (2.2rem)           |
-| `.val-lg` | Large value (1.6rem)                 |
-| `.val-md` | Medium value (1.1rem)                |
+| Class           | Purpose                                |
+| --------------- | -------------------------------------- |
+| `.accent`       | Purple highlight (`#8b3dff`)           |
+| `.label`        | Primary card text (0.95em)             |
+| `.sub`          | Secondary/muted text (0.75em)          |
+| `.val-xl`       | Extra-large value (2.2em)              |
+| `.val-lg`       | Large value (1.6em)                    |
+| `.val-md`       | Medium value (1.1em)                   |
+| `.hero-eyebrow` | Small label above the hero title       |
+| `.hero-title`   | Hero product name (45px)               |
+| `.hero-accent`  | Hero accent line (26px)                |
 
-Change the accent color once in the front matter to re-theme the slide:
+The `.val-*`, `.label`, and `.sub` sizes use `em`, so they scale with the slide's base font size instead of the browser's `rem` root. The hero sizes use `px` because the hero is a fixed-size panel.
+
+All colors, radii, gaps, and the card shadow are CSS variables on `section`:
 
 ```css
-.accent { color: #8b3dff; }
+--bento-bg: #f2f2f7;
+--bento-accent: #8b3dff;
+--bento-radius-lg: 20px;
+--bento-gap: 12px;
 ```
+
+Change `--bento-accent` once to re-theme the slide.
 
 ### Images
 
@@ -113,7 +125,26 @@ Card images are constrained to fit their card without overflowing:
 }
 ```
 
+For an image that should fill the whole card (edge to edge), add the `cover` class:
+
+```html
+<div class="card cover">
+  <img src="./images/product.png" />
+</div>
+```
+
+`.card.cover` removes the card padding and switches the image to `width: 100%; height: 100%; object-fit: cover`.
+
+For a small icon above card text, use `.card-icon`:
+
+```html
+<img class="card-icon" src="./images/icon.png" />
+<span class="label">Feature name</span>
+```
+
 The template uses `https://via.placeholder.com/...` URLs as placeholders. Replace them with local files (e.g. `./images/product.png`) or remote URLs.
+
+> Marp CLI's PNG export does not reliably apply inline `style` attributes (tested with v4.5.1). Prefer the classes above when customizing.
 
 ## Files
 
